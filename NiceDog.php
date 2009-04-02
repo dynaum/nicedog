@@ -147,6 +147,15 @@ class NiceDog {
         }
         return $new_matches;
     }
+    
+    function __autoload($class_name)
+    {
+        $file = "lib/$class_name.class.php";
+        if( !file_exists( $file ) )
+            require_once( $file );
+        else
+            throw new Exception('Class ['.$class_name.'] Not Found');
+    }
 }
  
 /*
