@@ -15,6 +15,7 @@ class File
     private $ext;
     private $path;
     private $file;
+    private $t = array( 'k' => 1, 'm' => 2, 'g' => 3 );
     
     public function __construct( $pName, $pPath )
     {
@@ -66,12 +67,56 @@ class File
     /**
 	 * Retorna o arquivo em array sem as quebras de linha
 	 *
+	 * @param string $er
+	 *    Expressao Regular para validacao de linha
+	 *
 	 * @return array
 	 *
 	 */
-    public function toArray()
+    public function toArray( $er )
     {
-        return file( $this->file, FILE_IGNORE_NEW_LINES );
+        $r = array();
+        if( $er )
+        {
+            foreach ( file( $this->file, FILE_IGNORE_NEW_LINES ) as $line )
+            {
+                preg_match( $er, $line, $result );
+                array_shift( $result ); // remove a linha do retorno
+                $r[] = $result;
+            }
+        }
+        else
+        {
+            $r = file( $this->file, FILE_IGNORE_NEW_LINES );
+        }
+        
+        return $r;
+    }
+    
+    /**
+	 * Apaga o arquivo
+	 *
+	 * @return boolean
+	 *
+	 */
+    public function del()
+    {
+        return unlink( $this->file );
+    }
+    
+    /**
+	 * Retorna o tamanho do arquivo
+	 *
+	 * @param string $format
+	 *    Define se o valor de retorno
+	 *
+	 * @return int
+	 *
+	 */
+    public function size( $format = "k" )
+    {
+        $f = $this->t[ strtolower( $format ) ] * 1024;
+        $f = $f < 1 ? 1 : $f;
+        return filesize( $this->file ) / $f;
     }
 }
-
