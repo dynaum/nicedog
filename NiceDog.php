@@ -148,13 +148,23 @@ class NiceDog {
         return $new_matches;
     }
     
-    function __autoload($class_name)
+}
+
+function __autoload($class_name)
+{
+    $file_local = "lib/$class_name.class.php";
+    $file = dirname(__FILE__)."/lib/$class_name.class.php";
+    if( file_exists( $file_local ) )
     {
-        $file = "lib/$class_name.class.php";
-        if( !file_exists( $file ) )
-            require_once( $file );
-        else
-            throw new Exception('Class ['.$class_name.'] Not Found');
+        require_once( $file_local );
+    }
+    elseif( file_exists( $file ) )
+    {
+        require_once( $file );
+    }
+    else
+    {
+        throw new Exception('Class ['.$class_name.'] Not Found');
     }
 }
  
