@@ -40,9 +40,9 @@ class Curl
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->request);
 
         // Adiocionando campos se necessario
-        if( !empty( $this->post ) )
+        if( $this->fields )
         {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $this->post);
+            curl_setopt( $ch, CURLOPT_POSTFIELDS, $this->fields );
         }
 
         // executando e pegando o resultado
@@ -62,8 +62,8 @@ class Curl
 	 * @return string
 	 *
 	 */
-    public function addPostFields( $fields )
+    public function addFields( $fields )
     {
-        $this->fields[] = $fields;
+        $this->fields = empty( $this->fields ) ? $fields : array_merge( $this->fields, $fields );
     }
 }
