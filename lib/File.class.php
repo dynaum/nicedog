@@ -108,7 +108,7 @@ class File
 	 * Retorna o tamanho do arquivo
 	 *
 	 * @param string $format
-	 *    Define se o valor de retorno
+	 *    Define o valor de retorno
 	 *
 	 * @return int
 	 *
